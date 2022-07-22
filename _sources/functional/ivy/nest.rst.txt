@@ -13,7 +13,6 @@ Nest
    :maxdepth: -1
    :caption: Nest
 
-   nest/apply_function.rst
    nest/index_nest.rst
    nest/prune_nest_at_index.rst
    nest/set_nest_at_index.rst
