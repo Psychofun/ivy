@@ -129,9 +129,8 @@
 <span></span><span class="sd">&quot;&quot;&quot;Collection of gradient Ivy functions.&quot;&quot;&quot;</span>
 
 <span class="c1"># local</span>
-<span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">ivy</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">from</span> <span class="nn">ivy.backend_handler</span> <span class="kn">import</span> <span class="n">current_backend</span>
 
 <span class="kn">from</span> <span class="nn">ivy.func_wrapper</span> <span class="kn">import</span> <span class="p">(</span>
@@ -140,20 +139,6 @@
     <span class="n">inputs_to_native_arrays</span><span class="p">,</span>
     <span class="n">handle_nestable</span><span class="p">,</span>
 <span class="p">)</span>
-
-
-<span class="c1"># Helper #</span>
-<span class="c1"># ------ #</span>
-<div class="viewcode-block" id="to_container_and_back"><a class="viewcode-back" href="../../../../functional/ivy/gradients/to_container_and_back.html#ivy.functional.ivy.gradients.to_container_and_back">[docs]</a><span class="k">def</span> <span class="nf">to_container_and_back</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-    <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">new_fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">container_args</span><span class="p">,</span> <span class="n">container_kwargs</span><span class="p">,</span> <span class="n">flag</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">args_to_container</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">container_args</span><span class="p">,</span> <span class="o">**</span><span class="n">container_kwargs</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">flag</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">ret</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">ret</span>
-
-    <span class="k">return</span> <span class="n">new_fn</span></div>
 
 
 <span class="c1"># Extra #</span>
@@ -413,9 +398,7 @@
 
 
 <div class="viewcode-block" id="execute_with_gradients"><a class="viewcode-back" href="../../../../functional/ivy/gradients/execute_with_gradients/execute_with_gradients_functional.html#ivy.functional.ivy.gradients.execute_with_gradients">[docs]</a><span class="nd">@to_native_arrays_and_back</span>
-<span class="k">def</span> <span class="nf">execute_with_gradients</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
-                           <span class="n">xs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ivy</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span> <span class="n">ivy</span><span class="o">.</span><span class="n">NativeArray</span><span class="p">],</span>
-                           <span class="n">retain_grads</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span> 
+<span class="k">def</span> <span class="nf">execute_with_gradients</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">retain_grads</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Call function func with input of xs variables, and return func first output y,</span>
 <span class="sd">    the gradients [dy/dx for x in xs], and any other function outputs after the returned</span>
 <span class="sd">    y value.</span>
@@ -434,39 +417,8 @@
 <span class="sd">    -------</span>
 <span class="sd">    ret</span>
 <span class="sd">        the function first output y, the gradients [dy/dx for x in xs], and any other</span>
-<span class="sd">        extra function outputs.</span>
+<span class="sd">        extra function outputs</span>
 
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    class MyModel(ivy.Module):</span>
-<span class="sd">        def __init__(self): </span>
-<span class="sd">            self.linear = ivy.Linear(3, 1)</span>
-<span class="sd">            ivy.Module.__init__(self)</span>
-
-<span class="sd">        def _forward(self, x): </span>
-<span class="sd">            x = ivy.relu(self.linear(x))</span>
-<span class="sd">            return x </span>
-
-<span class="sd">    ivy.set_backend(&#39;torch&#39;)  # change to any backend!</span>
-<span class="sd">    model = MyModel()</span>
-<span class="sd">    optimizer = ivy.Adam(1e-3)</span>
-<span class="sd">    x_in = ivy.array([</span>
-<span class="sd">                    [1., 0., 0.],</span>
-<span class="sd">                    [0.,1.,0.],</span>
-<span class="sd">                    [0.,0.,1.]</span>
-<span class="sd">                    ])</span>
-<span class="sd">    target = ivy.array([0.,1.,2]) </span>
-
-<span class="sd">    def loss_fn(v):</span>
-<span class="sd">        out = model(x_in, v=v)</span>
-<span class="sd">        return ivy.mean((out - target)**2)</span>
-
-<span class="sd">    for step in range(100):</span>
-<span class="sd">        loss, grads = ivy.execute_with_gradients(loss_fn, model.v)</span>
-<span class="sd">        model.v = optimizer.step(model.v, grads)</span>
-<span class="sd">        print(&#39;step {} loss {}&#39;.format(step, ivy.to_numpy(loss).item()))</span>
-
-<span class="sd">    print(&#39;Finished training!&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">current_backend</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">retain_grads</span><span class="p">)</span></div>
 
