@@ -471,12 +471,50 @@
 <span class="sd">    _base</span>
 <span class="sd">        Whether the current function call is the first function call in the recursive</span>
 <span class="sd">        stack. Used internally, do not set manually.</span>
+<span class="sd">    stop_after_n_found</span>
+<span class="sd">        to stop after some needed indices are found.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    ret</span>
 <span class="sd">        A set of indices for the nest where the function evaluated as True.</span>
 
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    With :code:`List` input:</span>
+
+<span class="sd">    &gt;&gt;&gt; nest = [[[1, -2, 3], 19], [[9, -36, 80], -10.19]]</span>
+<span class="sd">    &gt;&gt;&gt; fun = ivy.abs</span>
+<span class="sd">    &gt;&gt;&gt; nested_indices = ivy.nested_indices_where(nest, fn=fun)</span>
+<span class="sd">    &gt;&gt;&gt; print(nested_indices)</span>
+<span class="sd">    [</span>
+<span class="sd">        [0, 0, 0], [0, 0, 1],</span>
+<span class="sd">        [0, 0, 2], [0, 1],</span>
+<span class="sd">        [1, 0, 0], [1, 0, 1],</span>
+<span class="sd">        [1, 0, 2], [1, 1]</span>
+<span class="sd">    ]</span>
+
+
+<span class="sd">    With :code:`Tuple` input:</span>
+
+<span class="sd">    &gt;&gt;&gt; nest = ([-5, 9, 2], [0.3, 4.])</span>
+<span class="sd">    &gt;&gt;&gt; fun = ivy.abs</span>
+<span class="sd">    &gt;&gt;&gt; nested_indices = ivy.nested_indices_where(nest, fn=fun, stop_after_n_found=4)</span>
+<span class="sd">    &gt;&gt;&gt; print(nested_indices)</span>
+<span class="sd">    [[0, 0], [0, 1], [0, 2], [1, 0]]</span>
+
+<span class="sd">    With :code:`Dict` input:</span>
+
+<span class="sd">    &gt;&gt;&gt; nest={&#39;a&#39;: [2., 0.6, -2.], &#39;b&#39;: [1., 4., 1.9], &#39;c&#39;: [9.4]}</span>
+<span class="sd">    &gt;&gt;&gt; fun = ivy.abs</span>
+<span class="sd">    &gt;&gt;&gt; nested_indices = ivy.nested_indices_where(nest, fn=fun)</span>
+<span class="sd">    &gt;&gt;&gt; print(nested_indices)</span>
+<span class="sd">    [</span>
+<span class="sd">        [&#39;a&#39;, 0], [&#39;a&#39;, 1],</span>
+<span class="sd">        [&#39;a&#39;, 2], [&#39;b&#39;, 0],</span>
+<span class="sd">        [&#39;b&#39;, 1], [&#39;b&#39;, 2],</span>
+<span class="sd">        [&#39;c&#39;, 0]</span>
+<span class="sd">    ]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">to_ignore</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">to_ignore</span><span class="p">,</span> <span class="p">())</span>
     <span class="n">_index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span> <span class="k">if</span> <span class="n">_index</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">_index</span>
@@ -624,98 +662,20 @@
 <span class="sd">    -------</span>
 <span class="sd">    ret</span>
 <span class="sd">        x following the applicable of fn to each of it&#39;s iterated items.</span>
-<span class="sd">    </span>
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
 
-<span class="sd">    With :code:`int` inputs:</span>
-
-<span class="sd">    &gt;&gt;&gt; def special_square(x:float) -&gt; float:</span>
-<span class="sd">    &gt;&gt;&gt; return np.square(x)</span>
-<span class="sd">    &gt;&gt;&gt; results = ivy.map(</span>
-<span class="sd">    &gt;&gt;&gt; fn = special_square,</span>
-<span class="sd">    &gt;&gt;&gt; constant = None,</span>
-<span class="sd">    &gt;&gt;&gt; unique = {&#39;x&#39;:[1,2,3]},</span>
-<span class="sd">    &gt;&gt;&gt; mean = False)</span>
-<span class="sd">    &gt;&gt;&gt; print(results)</span>
-<span class="sd">    [1, 4, 9]</span>
-
-<span class="sd">    &gt;&gt;&gt; results =  ivy.map(</span>
-<span class="sd">    &gt;&gt;&gt; fn = special_square,</span>
-<span class="sd">    &gt;&gt;&gt; constant = None,</span>
-<span class="sd">    &gt;&gt;&gt; unique = {&#39;x&#39;:[0,1,2]},</span>
-<span class="sd">    &gt;&gt;&gt; mean = True)</span>
-<span class="sd">    &gt;&gt;&gt; print(results)</span>
-<span class="sd">    1.6666666666666667</span>
-
-<span class="sd">    &gt;&gt;&gt; def special_pow(x:float,y:float) -&gt;float:</span>
-<span class="sd">    &gt;&gt;&gt; return np.power(x,y)</span>
-<span class="sd">    &gt;&gt;&gt; results = ivy.map(</span>
-<span class="sd">    &gt;&gt;&gt; fn = special_pow,</span>
-<span class="sd">    &gt;&gt;&gt; constant = {&#39;y&#39;:[0,1]},</span>
-<span class="sd">    &gt;&gt;&gt; unique = {&#39;x&#39;:[1,2,3]},</span>
-<span class="sd">    &gt;&gt;&gt; mean = False)</span>
-<span class="sd">    &gt;&gt;&gt; print(results)</span>
-<span class="sd">    [array([1, 1], dtype=int32), array([1, 2], dtype=int32), array([1, 3], dtype=int32)]</span>
-
-<span class="sd">    &gt;&gt;&gt; results = ivy.map(</span>
-<span class="sd">    &gt;&gt;&gt; fn = special_pow,</span>
-<span class="sd">    &gt;&gt;&gt; constant = {&#39;y&#39;:[0,1]},</span>
-<span class="sd">    &gt;&gt;&gt; unique = {&#39;x&#39;:[1,2,3]},</span>
-<span class="sd">    &gt;&gt;&gt; mean = True)</span>
-<span class="sd">    &gt;&gt;&gt; print(results)</span>
-<span class="sd">    [1. 2.]</span>
-
-<span class="sd">    With :code:`float` inputs:</span>
-
-<span class="sd">    &gt;&gt;&gt; def linear_model(</span>
-<span class="sd">    &gt;&gt;&gt;        w:float,</span>
-<span class="sd">    &gt;&gt;&gt;        x:float,</span>
-<span class="sd">    &gt;&gt;&gt;        b:float) -&gt; float:</span>
-<span class="sd">    &gt;&gt;&gt; return w*x + b</span>
-<span class="sd">    &gt;&gt;&gt; results = ivy.map(</span>
-<span class="sd">    &gt;&gt;&gt;         fn = linear_model,</span>
-<span class="sd">    &gt;&gt;&gt;         constant = {&#39;w&#39;:10., &#39;b&#39;:1.},</span>
-<span class="sd">    &gt;&gt;&gt;         unique = {&#39;x&#39;:[0.,1.,2.]},</span>
-<span class="sd">    &gt;&gt;&gt;         mean = False)</span>
-<span class="sd">    &gt;&gt;&gt; print(results)</span>
-<span class="sd">    [1.0, 11.0, 21.0]</span>
-
-<span class="sd">    With :code:`ivy.Array` inputs:</span>
-
-<span class="sd">    &gt;&gt;&gt; results = ivy.map(</span>
-<span class="sd">    &gt;&gt;&gt; fn = linear_model,</span>
-<span class="sd">    &gt;&gt;&gt; constant = {&#39;w&#39;:ivy.array([1.,0.,1.]),</span>
-<span class="sd">    &gt;&gt;&gt;            &#39;b&#39;:ivy.array([0.,10.,100.])},</span>
-<span class="sd">    &gt;&gt;&gt; unique = {&#39;x&#39;:[ivy.array([0.,1.,0.]),</span>
-<span class="sd">    &gt;&gt;&gt;                ivy.array([1.,1.,1.])]},</span>
-<span class="sd">    &gt;&gt;&gt; mean = False)</span>
-<span class="sd">    &gt;&gt;&gt; print(results)</span>
-<span class="sd">    [ivy.array([  0.,  10., 100.]),</span>
-<span class="sd">    ivy.array([  1.,  10., 101.])]</span>
-
-<span class="sd">    &gt;&gt;&gt; results = ivy.map(</span>
-<span class="sd">    &gt;&gt;&gt; fn = linear_model,</span>
-<span class="sd">    &gt;&gt;&gt; constant = {&#39;w&#39;:ivy.array([1.,0.,1.]),</span>
-<span class="sd">    &gt;&gt;&gt;            &#39;b&#39;:ivy.array([0.,10.,100.])},</span>
-<span class="sd">    &gt;&gt;&gt; unique = {&#39;x&#39;:[ivy.array([0.,1.,0.]),</span>
-<span class="sd">    &gt;&gt;&gt;               ivy.array([1.,1.,1.])]},</span>
-<span class="sd">    &gt;&gt;&gt; mean = True)</span>
-<span class="sd">    &gt;&gt;&gt; print(results)</span>
-<span class="sd">    ivy.array([  0.5,  10. , 100. ])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">c</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">constant</span><span class="p">,</span> <span class="p">{})</span>
     <span class="n">u</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">unique</span><span class="p">,</span> <span class="p">{})</span>
     <span class="n">rets</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">r</span>
         <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">_map</span><span class="p">(</span>
-            <span class="k">lambda</span> <span class="o">*</span><span class="n">uv</span><span class="p">:</span> <span class="n">fn</span><span class="p">(</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="o">**</span><span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">uv</span><span class="p">)))),</span> <span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="k">lambda</span> <span class="o">*</span><span class="n">uv</span><span class="p">:</span> <span class="n">fn</span><span class="p">(</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="o">**</span><span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">uv</span><span class="p">)))),</span> <span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+        <span class="p">)</span>
     <span class="p">]</span>
     <span class="k">if</span> <span class="n">mean</span><span class="p">:</span>
-        <span class="n">rets</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rets</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">rets</span><span class="p">)</span>
-
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rets</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">rets</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">rets</span></div>
+
 
 <div class="viewcode-block" id="nested_map"><a class="viewcode-back" href="../../../../functional/ivy/nest/nested_map.html#ivy.functional.ivy.nest.nested_map">[docs]</a><span class="k">def</span> <span class="nf">nested_map</span><span class="p">(</span>
     <span class="n">x</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ivy</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span> <span class="n">ivy</span><span class="o">.</span><span class="n">NativeArray</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">],</span>
