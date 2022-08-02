@@ -170,12 +170,10 @@ outputs after the returned y value.</p>
 <li><p><strong>func</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>) – Function for which we compute the gradients of the
 output with respect to xs input.</p></li>
 <li><p><strong>retain_grads</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to retain the gradients of the returned values. (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)
-(Default value = False)</p></li>
+(Default value = False)
+the function first output y, the gradients [dy/dx for x in xs],
+and any other extra function outputs.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>ret</em> – the function first output y, the gradients [dy/dx for x in xs],
-and any other extra function outputs.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
