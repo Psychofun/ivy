@@ -21,7 +21,7 @@
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="ivy.Container.execute_with_gradients" href="execute_with_gradients_container.html" />
+    <link rel="next" title="ivy.Array.execute_with_gradients" href="execute_with_gradients_array.html" />
     <link rel="prev" title="execute_with_gradients" href="../execute_with_gradients.html" /> 
 </head>
 
@@ -70,6 +70,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../stop_gradient.html">stop_gradient</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../execute_with_gradients.html">execute_with_gradients</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">ivy.execute_with_gradients</a></li>
+<li class="toctree-l3"><a class="reference internal" href="execute_with_gradients_array.html">ivy.Array.execute_with_gradients</a></li>
 <li class="toctree-l3"><a class="reference internal" href="execute_with_gradients_container.html">ivy.Container.execute_with_gradients</a></li>
 <li class="toctree-l3"><a class="reference internal" href="static_execute_with_gradients_container.html">ivy.Container.static_execute_with_gradients</a></li>
 </ul>
@@ -178,13 +179,10 @@ extra function outputs.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ivy</span><span class="o">.</span><span class="n">set_backend</span><span class="p">(</span><span class="s1">&#39;tensorflow&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span><span class="mi">100</span><span class="o">*</span><span class="n">x</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">2.</span><span class="p">,</span><span class="mf">5.</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">func</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">xs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>     <span class="o">&gt;&gt;&gt;</span>     <span class="n">func</span><span class="p">,</span>     <span class="o">&gt;&gt;&gt;</span>     <span class="n">xs</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">func_output</span><span class="p">,</span><span class="n">grads</span> <span class="o">=</span> <span class="n">results</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function output: &quot;</span><span class="p">,</span> <span class="n">func_output</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;grads: &quot;</span><span class="p">,</span> <span class="n">grads</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;type results: &quot;</span><span class="p">,</span><span class="nb">type</span><span class="p">(</span><span class="n">results</span><span class="p">),</span><span class="nb">type</span><span class="p">(</span><span class="n">func_output</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">grads</span><span class="p">))</span>
 <span class="go">function output:  ivy.array([100., 200., 500.])</span>
 <span class="go">grads:  ivy.array([100., 100., 100.])</span>
 </pre></div>
@@ -192,9 +190,7 @@ extra function outputs.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">z</span>  <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">variable</span><span class="p">(</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">10.</span><span class="p">]))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span><span class="n">ivy</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">2.</span><span class="p">,</span><span class="mf">5.</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>
-<span class="gp">&gt;&gt;&gt; </span>       <span class="n">func</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>       <span class="n">xs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>     <span class="o">&gt;&gt;&gt;</span>        <span class="n">func</span><span class="p">,</span>     <span class="o">&gt;&gt;&gt;</span>        <span class="n">xs</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">func_output</span><span class="p">,</span><span class="n">grads</span> <span class="o">=</span> <span class="n">results</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function output: &quot;</span><span class="p">,</span> <span class="n">func_output</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;grads: &quot;</span><span class="p">,</span> <span class="n">grads</span><span class="p">)</span>
@@ -205,9 +201,7 @@ extra function outputs.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">linear</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">2.</span><span class="p">,</span><span class="mf">5.</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>
-<span class="gp">&gt;&gt;&gt; </span>       <span class="n">func</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>       <span class="n">xs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>     <span class="o">&gt;&gt;&gt;</span>        <span class="n">func</span><span class="p">,</span>     <span class="o">&gt;&gt;&gt;</span>        <span class="n">xs</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">func_output</span><span class="p">,</span><span class="n">grads</span> <span class="o">=</span> <span class="n">results</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function output: &quot;</span><span class="p">,</span> <span class="n">func_output</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;grads: &quot;</span><span class="p">,</span> <span class="n">grads</span><span class="p">)</span>
@@ -218,9 +212,7 @@ extra function outputs.</p>
 <p>With <code class="code docutils literal notranslate"><span class="pre">ivy.NativeArray</span></code> input:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">native_array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">2.</span><span class="p">,</span><span class="mf">5.</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>
-<span class="gp">&gt;&gt;&gt; </span>       <span class="n">func</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>       <span class="n">xs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>     <span class="o">&gt;&gt;&gt;</span>        <span class="n">func</span><span class="p">,</span>     <span class="o">&gt;&gt;&gt;</span>        <span class="n">xs</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">func_output</span><span class="p">,</span><span class="n">grads</span> <span class="o">=</span> <span class="n">results</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function output: &quot;</span><span class="p">,</span> <span class="n">func_output</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;grads: &quot;</span><span class="p">,</span> <span class="n">grads</span><span class="p">)</span>
@@ -233,9 +225,7 @@ extra function outputs.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">Container</span><span class="p">(</span>
 <span class="gp">&gt;&gt;&gt; </span>   <span class="n">a</span><span class="o">=</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">]),</span>
 <span class="gp">&gt;&gt;&gt; </span>   <span class="n">b</span> <span class="o">=</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.</span><span class="p">,</span><span class="mf">5.</span><span class="p">,</span><span class="mf">5.</span><span class="p">])</span> <span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">func_outputs</span><span class="p">,</span><span class="n">grads</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>
-<span class="gp">&gt;&gt;&gt; </span>   <span class="n">func</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>   <span class="n">xs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func_outputs</span><span class="p">,</span><span class="n">grads</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>     <span class="o">&gt;&gt;&gt;</span>     <span class="n">func</span><span class="p">,</span>     <span class="o">&gt;&gt;&gt;</span>     <span class="n">xs</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function outputs: &quot;</span><span class="p">,</span> <span class="n">func_outputs</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;gradients: &quot;</span><span class="p">,</span><span class="n">grads</span><span class="p">)</span>
 <span class="go">function outputs:  {</span>
@@ -262,7 +252,7 @@ extra function outputs.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../execute_with_gradients.html" class="btn btn-neutral float-left" title="execute_with_gradients" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="execute_with_gradients_container.html" class="btn btn-neutral float-right" title="ivy.Container.execute_with_gradients" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="execute_with_gradients_array.html" class="btn btn-neutral float-right" title="ivy.Array.execute_with_gradients" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
