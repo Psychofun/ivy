@@ -211,18 +211,19 @@ with minimal changes.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ivy.container.gradients.ContainerWithGradients.execute_with_gradients">
 <span class="sig-name descname"><span class="pre">execute_with_gradients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retain_grads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_chains</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_apply</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prune_unapplied</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_sequences</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ivy/container/gradients.html#ContainerWithGradients.execute_with_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ivy.container.gradients.ContainerWithGradients.execute_with_gradients" title="Permalink to this definition"></a></dt>
-<dd><p>ivy.Container instance method variant of ivy.execute_with_gradients. This method simply wraps
-the function, and so the docstring for ivy.execute_with_gradients also applies to this
-method with minimal changes.</p>
+<dd><p>ivy.Container instance method variant of ivy.execute_with_gradients.
+This method simply wraps the function, and so the docstring for
+ivy.execute_with_gradients also applies to this method with minimal changes.</p>
 <p>Call function func with the container, and return func first output y,
-the gradients [dy/dx for x in xs], and any other function outputs after the returned
-y value.</p>
+the gradients [dy/dx for x in xs], and any other function outputs after
+the returned y value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>func</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>) – Function for which we compute the gradients of the output with respect to xs
 input.</p></li>
-<li><p><strong>retain_grads</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to retain the gradients of the returned values. (Default value = False) (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)</p></li>
+<li><p><strong>retain_grads</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to retain the gradients of the returned values. (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)
+(Default value = False)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -476,19 +477,20 @@ with minimal changes.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ivy.container.gradients.ContainerWithGradients.static_execute_with_gradients">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">static_execute_with_gradients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retain_grads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_chains</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_apply</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prune_unapplied</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_sequences</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ivy/container/gradients.html#ContainerWithGradients.static_execute_with_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ivy.container.gradients.ContainerWithGradients.static_execute_with_gradients" title="Permalink to this definition"></a></dt>
-<dd><p>ivy.Container static method variant of ivy.execute_with_gradients. This method simply wraps
-the function, and so the docstring for ivy.execute_with_gradients also applies to this
-method with minimal changes.</p>
+<dd><p>ivy.Container static method variant of ivy.execute_with_gradients.
+This method simply wraps the function, and so the docstring for
+ivy.execute_with_gradients also applies to this method with minimal changes.</p>
 <p>Call function func with input of xs variables, and return func first output y,
-the gradients [dy/dx for x in xs], and any other function outputs after the returned
-y value.</p>
+the gradients [dy/dx for x in xs], and any other function outputs after
+the returned y value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>func</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>) – Function for which we compute the gradients of the output with respect to xs
 input.</p></li>
 <li><p><strong>xs</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code>, <a class="reference internal" href="../array/array/Array.html#ivy.array.array.Array" title="ivy.array.array.Array"><code class="xref py py-class docutils literal notranslate"><span class="pre">Array</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">NativeArray</span></code>]) – Variables for which to compute the function gradients with respective to.</p></li>
-<li><p><strong>retain_grads</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to retain the gradients of the returned values. (Default value = False) (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)</p></li>
+<li><p><strong>retain_grads</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to retain the gradients of the returned values. (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)
+(Default value = False)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

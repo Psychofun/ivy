@@ -393,13 +393,13 @@
         <span class="n">map_sequences</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        ivy.Container static method variant of ivy.execute_with_gradients. This method simply wraps</span>
-<span class="sd">        the function, and so the docstring for ivy.execute_with_gradients also applies to this</span>
-<span class="sd">        method with minimal changes.</span>
+<span class="sd">        ivy.Container static method variant of ivy.execute_with_gradients.</span>
+<span class="sd">        This method simply wraps the function, and so the docstring for </span>
+<span class="sd">        ivy.execute_with_gradients also applies to this method with minimal changes.</span>
 <span class="sd">        </span>
 <span class="sd">        Call function func with input of xs variables, and return func first output y,</span>
-<span class="sd">        the gradients [dy/dx for x in xs], and any other function outputs after the returned</span>
-<span class="sd">        y value.</span>
+<span class="sd">        the gradients [dy/dx for x in xs], and any other function outputs after </span>
+<span class="sd">        the returned y value.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -409,7 +409,8 @@
 <span class="sd">        xs</span>
 <span class="sd">            Variables for which to compute the function gradients with respective to.</span>
 <span class="sd">        retain_grads</span>
-<span class="sd">            Whether to retain the gradients of the returned values. (Default value = False)</span>
+<span class="sd">            Whether to retain the gradients of the returned values.</span>
+<span class="sd">            (Default value = False)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -501,13 +502,13 @@
         <span class="n">map_sequences</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        ivy.Container instance method variant of ivy.execute_with_gradients. This method simply wraps</span>
-<span class="sd">        the function, and so the docstring for ivy.execute_with_gradients also applies to this</span>
-<span class="sd">        method with minimal changes.</span>
+<span class="sd">        ivy.Container instance method variant of ivy.execute_with_gradients.</span>
+<span class="sd">        This method simply wraps the function, and so the docstring for </span>
+<span class="sd">        ivy.execute_with_gradients also applies to this method with minimal changes.</span>
 <span class="sd">        </span>
 <span class="sd">        Call function func with the container, and return func first output y,</span>
-<span class="sd">        the gradients [dy/dx for x in xs], and any other function outputs after the returned</span>
-<span class="sd">        y value.</span>
+<span class="sd">        the gradients [dy/dx for x in xs], and any other function outputs after </span>
+<span class="sd">        the returned y value.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -515,7 +516,8 @@
 <span class="sd">            Function for which we compute the gradients of the output with respect to xs</span>
 <span class="sd">            input.</span>
 <span class="sd">        retain_grads</span>
-<span class="sd">            Whether to retain the gradients of the returned values. (Default value = False)</span>
+<span class="sd">            Whether to retain the gradients of the returned values.</span>
+<span class="sd">            (Default value = False)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -584,8 +586,6 @@
 <span class="sd">        c function output:  ivy.array([1.24])</span>
 <span class="sd">        c gradients:  ivy.array([1.15  , 1.12  , 0.0972])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-    
-        
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">static_execute_with_gradients</span><span class="p">(</span>
             <span class="n">func</span><span class="p">,</span>
             <span class="bp">self</span><span class="p">,</span>
@@ -594,7 +594,7 @@
             <span class="n">to_apply</span><span class="o">=</span><span class="n">to_apply</span><span class="p">,</span>
             <span class="n">prune_unapplied</span><span class="o">=</span><span class="n">prune_unapplied</span><span class="p">,</span>
             <span class="n">map_sequences</span><span class="o">=</span><span class="n">map_sequences</span><span class="p">,</span>
-            <span class="p">)</span> </div>
+        <span class="p">)</span> </div>
 
 <div class="viewcode-block" id="ContainerWithGradients.static_adam_step"><a class="viewcode-back" href="../../../data_classes/container/gradients/ContainerWithGradients.html#ivy.container.gradients.ContainerWithGradients.static_adam_step">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">static_adam_step</span><span class="p">(</span>

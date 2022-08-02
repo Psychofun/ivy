@@ -3190,7 +3190,7 @@
 <span class="c1">#ivy.array.gradients</span>
 <span class="c1"># global</span>
 <span class="kn">import</span> <span class="nn">abc</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span><span class="n">Optional</span><span class="p">,</span><span class="n">Callable</span><span class="p">,</span><span class="n">List</span><span class="p">,</span><span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span>
 
 <span class="c1"># local</span>
 <span class="kn">import</span> <span class="nn">ivy</span>
@@ -3372,33 +3372,35 @@
     <span class="n">retain_grads</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    ivy.Array instance method variant of ivy.execute_with_gradients. This method simply wraps</span>
-<span class="sd">    the function, and so the docstring for ivy.execute_with_gradients also applies to this</span>
+<span class="sd">    ivy.Array instance method variant of ivy.execute_with_gradients.</span>
+<span class="sd">    This method simply wraps the function, and so </span>
+<span class="sd">    the docstring for ivy.execute_with_gradients also applies to this</span>
 <span class="sd">    method with minimal changes.</span>
 <span class="sd">    </span>
 <span class="sd">    Call function func with the container, and return func first output y,</span>
-<span class="sd">    the gradients [dy/dx for x in xs], and any other function outputs after the returned</span>
-<span class="sd">    y value.</span>
+<span class="sd">    the gradients [dy/dx for x in xs], and any other function </span>
+<span class="sd">    outputs after the returned y value.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    func</span>
-<span class="sd">        Function for which we compute the gradients of the output with respect to xs</span>
-<span class="sd">        input.</span>
+<span class="sd">        Function for which we compute the gradients of the </span>
+<span class="sd">        output with respect to xs input.</span>
 <span class="sd">    retain_grads</span>
-<span class="sd">        Whether to retain the gradients of the returned values. (Default value = False)</span>
+<span class="sd">        Whether to retain the gradients of the returned values.</span>
+<span class="sd">        (Default value = False)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    ret</span>
-<span class="sd">        the function first output y, the gradients [dy/dx for x in xs], and any other</span>
-<span class="sd">        extra function outputs.</span>
+<span class="sd">        the function first output y, the gradients [dy/dx for x in xs],</span>
+<span class="sd">        and any other extra function outputs.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
 <span class="sd">    With :code:`ivy.Array` input:</span>
-<span class="sd">    </span>
+
 <span class="sd">    &gt;&gt;&gt; ivy.set_backend(&#39;tensorflow&#39;)</span>
 <span class="sd">    &gt;&gt;&gt; func = lambda x :x**2</span>
 <span class="sd">    &gt;&gt;&gt; xs =ivy.array([1.,0.,10.])</span>
