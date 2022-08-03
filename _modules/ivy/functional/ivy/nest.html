@@ -670,11 +670,11 @@
 <span class="sd">    With :code:`int` inputs:</span>
 
 <span class="sd">    &gt;&gt;&gt; def special_square(x:float) -&gt; float:</span>
-<span class="sd">    &gt;&gt;&gt; return np.square(x)</span>
+<span class="sd">    &gt;&gt;&gt;     return np.square(x)</span>
 <span class="sd">    &gt;&gt;&gt; results = ivy.map( \</span>
 <span class="sd">    &gt;&gt;&gt;     fn = special_square, \</span>
 <span class="sd">    &gt;&gt;&gt;     constant = None, \</span>
-<span class="sd">    &gt;&gt;&gt;     unique = {&#39;x&#39; : [1,2,3]},\</span>
+<span class="sd">    &gt;&gt;&gt;     unique = {&#39;x&#39; : [1,2,3]}, \</span>
 <span class="sd">    &gt;&gt;&gt;     mean = False)</span>
 <span class="sd">    &gt;&gt;&gt; print(results)</span>
 <span class="sd">    [1, 4, 9]</span>
@@ -707,8 +707,7 @@
 
 <span class="sd">    With :code:`float` inputs:</span>
 
-<span class="sd">    &gt;&gt;&gt; def linear_model(w:float, x:float, b:float) -&gt; float: </span>
-<span class="sd">    &gt;&gt;&gt;     return w*x + b</span>
+<span class="sd">    &gt;&gt;&gt; def linear_model(w:float, x:float, b:float) -&gt; float: return w*x + b</span>
 <span class="sd">    &gt;&gt;&gt; results = ivy.map( \</span>
 <span class="sd">    &gt;&gt;&gt;         fn = linear_model, \</span>
 <span class="sd">    &gt;&gt;&gt;         constant = {&#39;w&#39;:10., &#39;b&#39;:1.}, \</span>
@@ -733,7 +732,7 @@
 <span class="sd">    &gt;&gt;&gt; results = ivy.map( \</span>
 <span class="sd">    &gt;&gt;&gt;     fn = linear_model, \</span>
 <span class="sd">    &gt;&gt;&gt;     constant = {&#39;w&#39;:ivy.array([1.,0.,1.]), \</span>
-<span class="sd">    &gt;&gt;&gt;         &#39;b&#39;:ivy.array([0.,10.,100.])},\</span>
+<span class="sd">    &gt;&gt;&gt;                 &#39;b&#39;:ivy.array([0.,10.,100.])},\</span>
 <span class="sd">    &gt;&gt;&gt;     unique = {&#39;x&#39;:[ivy.array([0.,1.,0.]), \</span>
 <span class="sd">    &gt;&gt;&gt;               ivy.array([1.,1.,1.])]}, \</span>
 <span class="sd">    &gt;&gt;&gt;     mean = True)</span>
