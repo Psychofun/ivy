@@ -707,10 +707,10 @@
 
 <span class="sd">    &gt;&gt;&gt; def linear_model(w:float, x:float, b:float) -&gt; float: return w*x + b</span>
 <span class="sd">    &gt;&gt;&gt; results = ivy.map( \</span>
-<span class="sd">    &gt;&gt;&gt;         fn = linear_model, \</span>
-<span class="sd">    &gt;&gt;&gt;         constant = {&#39;w&#39;:10., &#39;b&#39;:1.}, \</span>
-<span class="sd">    &gt;&gt;&gt;         unique = {&#39;x&#39;:[0.,1.,2.]}, \</span>
-<span class="sd">    &gt;&gt;&gt;         mean = False)</span>
+<span class="sd">    &gt;&gt;&gt;     fn = linear_model, \</span>
+<span class="sd">    &gt;&gt;&gt;     constant = {&#39;w&#39;:10., &#39;b&#39;:1.}, \</span>
+<span class="sd">    &gt;&gt;&gt;     unique = {&#39;x&#39;:[0.,1.,2.]}, \</span>
+<span class="sd">    &gt;&gt;&gt;     mean = False)</span>
 <span class="sd">    &gt;&gt;&gt; print(results)</span>
 <span class="sd">    [1.0, 11.0, 21.0]</span>
 
