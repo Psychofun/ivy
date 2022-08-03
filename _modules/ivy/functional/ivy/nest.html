@@ -669,7 +669,8 @@
 
 <span class="sd">    With :code:`int` inputs:</span>
 
-<span class="sd">    &gt;&gt;&gt; def special_square(x:float) -&gt; float : return np.square(x)</span>
+<span class="sd">    &gt;&gt;&gt; def special_square(x : float) -&gt; float : </span>
+<span class="sd">    &gt;&gt;&gt;     return np.square(x) </span>
 <span class="sd">    &gt;&gt;&gt; results = ivy.map( \</span>
 <span class="sd">    &gt;&gt;&gt;     fn = special_square, \</span>
 <span class="sd">    &gt;&gt;&gt;     constant = None, \</span>
