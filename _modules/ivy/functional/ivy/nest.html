@@ -670,16 +670,14 @@
 <span class="sd">    With :code:`int` inputs:</span>
 
 <span class="sd">    &gt;&gt;&gt; def special_square(x : float) -&gt; float : return np.square(x)</span>
-<span class="sd">    &gt;&gt;&gt; results = ivy.map( \</span>
-<span class="sd">    &gt;&gt;&gt;     fn = special_square, \</span>
+<span class="sd">    &gt;&gt;&gt; results = ivy.map(fn = special_square, \</span>
 <span class="sd">    &gt;&gt;&gt;     constant = None, \</span>
 <span class="sd">    &gt;&gt;&gt;     unique = {&#39;x&#39; : [1,2,3]}, \</span>
 <span class="sd">    &gt;&gt;&gt;     mean = False)</span>
 <span class="sd">    &gt;&gt;&gt; print(results)</span>
 <span class="sd">    [1, 4, 9]</span>
 
-<span class="sd">    &gt;&gt;&gt; results = ivy.map( \</span>
-<span class="sd">    &gt;&gt;&gt;     fn = special_square, \</span>
+<span class="sd">    &gt;&gt;&gt; results = ivy.map(fn = special_square, \</span>
 <span class="sd">    &gt;&gt;&gt;     constant = None, \</span>
 <span class="sd">    &gt;&gt;&gt;     unique = {&#39;x&#39;:[0,1,2]},\</span>
 <span class="sd">    &gt;&gt;&gt;     mean = True)</span>
@@ -687,16 +685,14 @@
 <span class="sd">    1.6666666666666667</span>
 
 <span class="sd">    &gt;&gt;&gt; def special_pow(x:float,y:float) -&gt;float : return np.power(x,y)</span>
-<span class="sd">    &gt;&gt;&gt; results = ivy.map( \</span>
-<span class="sd">    &gt;&gt;&gt;     fn = special_pow, \</span>
+<span class="sd">    &gt;&gt;&gt; results = ivy.map(fn = special_pow, \</span>
 <span class="sd">    &gt;&gt;&gt;     constant = {&#39;y&#39;:[0,1]}, \</span>
 <span class="sd">    &gt;&gt;&gt;     unique = {&#39;x&#39;:[1,2,3]}, \</span>
 <span class="sd">    &gt;&gt;&gt;     mean = False)</span>
 <span class="sd">    &gt;&gt;&gt; print(results)</span>
 <span class="sd">    [array([1, 1], dtype=int32), array([1, 2], dtype=int32), array([1, 3], dtype=int32)]</span>
 
-<span class="sd">    &gt;&gt;&gt; results = ivy.map( \</span>
-<span class="sd">    &gt;&gt;&gt;     fn = special_pow, \</span>
+<span class="sd">    &gt;&gt;&gt; results = ivy.map(fn = special_pow, \</span>
 <span class="sd">    &gt;&gt;&gt;     constant = {&#39;y&#39;:[0,1]}, \</span>
 <span class="sd">    &gt;&gt;&gt;     unique = {&#39;x&#39;:[1,2,3]}, \</span>
 <span class="sd">    &gt;&gt;&gt;     mean = True)</span>
@@ -706,8 +702,7 @@
 <span class="sd">    With :code:`float` inputs:</span>
 
 <span class="sd">    &gt;&gt;&gt; def linear_model(w:float, x:float, b:float) -&gt; float: return w*x + b</span>
-<span class="sd">    &gt;&gt;&gt; results = ivy.map( \</span>
-<span class="sd">    &gt;&gt;&gt;     fn = linear_model, \</span>
+<span class="sd">    &gt;&gt;&gt; results = ivy.map(fn = linear_model, \</span>
 <span class="sd">    &gt;&gt;&gt;     constant = {&#39;w&#39;:10., &#39;b&#39;:1.}, \</span>
 <span class="sd">    &gt;&gt;&gt;     unique = {&#39;x&#39;:[0.,1.,2.]}, \</span>
 <span class="sd">    &gt;&gt;&gt;     mean = False)</span>
@@ -716,8 +711,7 @@
 
 <span class="sd">    With :code:`ivy.Array` inputs:</span>
 
-<span class="sd">    &gt;&gt;&gt; results = ivy.map(</span>
-<span class="sd">    &gt;&gt;&gt;     fn = linear_model, \</span>
+<span class="sd">    &gt;&gt;&gt; results = ivy.map(fn = linear_model, \</span>
 <span class="sd">    &gt;&gt;&gt;     constant = {&#39;w&#39;:ivy.array([1.,0.,1.]), \</span>
 <span class="sd">    &gt;&gt;&gt;            &#39;b&#39;:ivy.array([0.,10.,100.])}, \</span>
 <span class="sd">    &gt;&gt;&gt;     unique = {&#39;x&#39;:[ivy.array([0.,1.,0.]), \</span>
@@ -727,8 +721,7 @@
 <span class="sd">    [ivy.array([  0.,  10., 100.]),</span>
 <span class="sd">    ivy.array([  1.,  10., 101.])]</span>
 
-<span class="sd">    &gt;&gt;&gt; results = ivy.map( \</span>
-<span class="sd">    &gt;&gt;&gt;     fn = linear_model, \</span>
+<span class="sd">    &gt;&gt;&gt; results = ivy.map(fn = linear_model, \</span>
 <span class="sd">    &gt;&gt;&gt;     constant = {&#39;w&#39;:ivy.array([1.,0.,1.]), \</span>
 <span class="sd">    &gt;&gt;&gt;                 &#39;b&#39;:ivy.array([0.,10.,100.])},\</span>
 <span class="sd">    &gt;&gt;&gt;     unique = {&#39;x&#39;:[ivy.array([0.,1.,0.]), \</span>
