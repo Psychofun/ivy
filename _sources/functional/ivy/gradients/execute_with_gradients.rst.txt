@@ -3,10 +3,6 @@ execute_with_gradients
 
 .. autofunction:: ivy.functional.ivy.gradients.execute_with_gradients
 
-.. autofunction:: ivy.array.array_methods.execute_with_gradients
-
-.. autofunction:: ivy.container.container_methods.execute_with_gradients
-
 .. autofunction:: ivy.container.container_methods.static_execute_with_gradients
 |
 | **Supported Frameworks:**
@@ -35,7 +31,5 @@ execute_with_gradients
    :caption: execute_with_gradients
 
    execute_with_gradients/execute_with_gradients_functional.rst
-   execute_with_gradients/execute_with_gradients_array.rst
-   execute_with_gradients/execute_with_gradients_container.rst
    execute_with_gradients/static_execute_with_gradients_container.rst
 
