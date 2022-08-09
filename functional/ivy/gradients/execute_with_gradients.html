@@ -71,6 +71,8 @@
 <li class="toctree-l2"><a class="reference internal" href="stop_gradient.html">stop_gradient</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">execute_with_gradients</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="execute_with_gradients/execute_with_gradients_functional.html">ivy.execute_with_gradients</a></li>
+<li class="toctree-l3"><a class="reference internal" href="execute_with_gradients/execute_with_gradients_array.html">ivy.Array.execute_with_gradients</a></li>
+<li class="toctree-l3"><a class="reference internal" href="execute_with_gradients/execute_with_gradients_container.html">ivy.Container.execute_with_gradients</a></li>
 <li class="toctree-l3"><a class="reference internal" href="execute_with_gradients/static_execute_with_gradients_container.html">ivy.Container.static_execute_with_gradients</a></li>
 </ul>
 </li>
@@ -162,23 +164,292 @@ y value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>func</strong> – Function for which we compute the gradients of the output with respect to xs
+<li><p><strong>func</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>) – Function for which we compute the gradients of the output with respect to xs
 input.</p></li>
-<li><p><strong>xs</strong> – Variables for which to compute the function gradients with respective to.</p></li>
-<li><p><strong>retain_grads</strong> – Whether to retain the gradients of the returned values. (Default value = False)</p></li>
+<li><p><strong>xs</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="../../../data_classes/array/array/Array.html#ivy.array.array.Array" title="ivy.array.array.Array"><code class="xref py py-class docutils literal notranslate"><span class="pre">Array</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">NativeArray</span></code>]) – Variables for which to compute the function gradients with respective to.</p></li>
+<li><p><strong>retain_grads</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to retain the gradients of the returned values. (Default value = False) (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>ret</em> – the function first output y, the gradients [dy/dx for x in xs], and any other
-extra function outputs</p>
+extra function outputs.</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<p>With <code class="code docutils literal notranslate"><span class="pre">ivy.Array</span></code> input:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ivy</span><span class="o">.</span><span class="n">set_backend</span><span class="p">(</span><span class="s1">&#39;tensorflow&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span><span class="mi">100</span><span class="o">*</span><span class="n">x</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">2.</span><span class="p">,</span><span class="mf">5.</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>     <span class="o">&gt;&gt;&gt;</span>     <span class="n">func</span><span class="p">,</span>     <span class="o">&gt;&gt;&gt;</span>     <span class="n">xs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func_output</span><span class="p">,</span><span class="n">grads</span> <span class="o">=</span> <span class="n">results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function output: &quot;</span><span class="p">,</span> <span class="n">func_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;grads: &quot;</span><span class="p">,</span> <span class="n">grads</span><span class="p">)</span>
+<span class="go">function output:  ivy.array([100., 200., 500.])</span>
+<span class="go">grads:  ivy.array([100., 100., 100.])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">z</span>  <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">variable</span><span class="p">(</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">10.</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span><span class="n">ivy</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">2.</span><span class="p">,</span><span class="mf">5.</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>     <span class="o">&gt;&gt;&gt;</span>        <span class="n">func</span><span class="p">,</span>     <span class="o">&gt;&gt;&gt;</span>        <span class="n">xs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func_output</span><span class="p">,</span><span class="n">grads</span> <span class="o">=</span> <span class="n">results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function output: &quot;</span><span class="p">,</span> <span class="n">func_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;grads: &quot;</span><span class="p">,</span> <span class="n">grads</span><span class="p">)</span>
+<span class="go">function output:  ivy.array(54.)</span>
+<span class="go">grads:  ivy.array([ 2.,  1., 10.])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">linear</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">2.</span><span class="p">,</span><span class="mf">5.</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>     <span class="o">&gt;&gt;&gt;</span>        <span class="n">func</span><span class="p">,</span>     <span class="o">&gt;&gt;&gt;</span>        <span class="n">xs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func_output</span><span class="p">,</span><span class="n">grads</span> <span class="o">=</span> <span class="n">results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function output: &quot;</span><span class="p">,</span> <span class="n">func_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;grads: &quot;</span><span class="p">,</span> <span class="n">grads</span><span class="p">)</span>
+<span class="go">function output:  ivy.array([-0.811])</span>
+<span class="go">grads:  ivy.array([-0.898 , -0.204 ,  0.0988])</span>
+</pre></div>
+</div>
+<p>With <code class="code docutils literal notranslate"><span class="pre">ivy.NativeArray</span></code> input:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">native_array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">2.</span><span class="p">,</span><span class="mf">5.</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>     <span class="o">&gt;&gt;&gt;</span>        <span class="n">func</span><span class="p">,</span>     <span class="o">&gt;&gt;&gt;</span>        <span class="n">xs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func_output</span><span class="p">,</span><span class="n">grads</span> <span class="o">=</span> <span class="n">results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function output: &quot;</span><span class="p">,</span> <span class="n">func_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;grads: &quot;</span><span class="p">,</span> <span class="n">grads</span><span class="p">)</span>
+<span class="go">function output:  ivy.array([ 1.,  4., 25.])</span>
+<span class="go">grads:  ivy.array([ 2.,  4., 10.])</span>
+</pre></div>
+</div>
+<p>With <code class="code docutils literal notranslate"><span class="pre">ivy.Container</span></code> input:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">Container</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>   <span class="n">a</span><span class="o">=</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">]),</span>
+<span class="gp">&gt;&gt;&gt; </span>   <span class="n">b</span> <span class="o">=</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.</span><span class="p">,</span><span class="mf">5.</span><span class="p">,</span><span class="mf">5.</span><span class="p">])</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func_outputs</span><span class="p">,</span><span class="n">grads</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>     <span class="o">&gt;&gt;&gt;</span>     <span class="n">func</span><span class="p">,</span>     <span class="o">&gt;&gt;&gt;</span>     <span class="n">xs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function outputs: &quot;</span><span class="p">,</span> <span class="n">func_outputs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;gradients: &quot;</span><span class="p">,</span><span class="n">grads</span><span class="p">)</span>
+<span class="go">function outputs:  {</span>
+<span class="go">    a: ivy.array([2., 2., 2.]),</span>
+<span class="go">    b: ivy.array([50., 50., 50.])</span>
+<span class="go">}</span>
+<span class="go">gradients:  {</span>
+<span class="go">    a: ivy.array([4., 4., 4.]),</span>
+<span class="go">    b: ivy.array([20., 20., 20.])</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ivy.array.array_methods.execute_with_gradients">
+<span class="sig-prename descclassname">ivy.Array.</span></span><span class="sig-name descname"><span class="pre">execute_with_gradients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retain_grads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ivy/array/gradients.html#ArrayWithGradients.execute_with_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ivy.array.array_methods.execute_with_gradients" title="Permalink to this definition"></a></dt>
+<dd><p>ivy.Array instance method variant of <a href="./execute_with_gradients/execute_with_gradients_functional.html">ivy.execute_with_gradients</a>.
+This method simply wraps the function, and so
+the docstring for <a href="./execute_with_gradients/execute_with_gradients_functional.html">ivy.execute_with_gradients</a> also applies to this
+method with minimal changes.</p>
+<p>Call function func with the container, and return func first output y,
+the gradients [dy/dx for x in xs], and any other function
+outputs after the returned y value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>) – Function for which we compute the gradients of the
+output with respect to xs input.</p></li>
+<li><p><strong>retain_grads</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to retain the gradients of the returned values. (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)
+(Default value = False)
+the function first output y, the gradients [dy/dx for x in xs],
+and any other extra function outputs.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>With <code class="code docutils literal notranslate"><span class="pre">ivy.Array</span></code> input:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ivy</span><span class="o">.</span><span class="n">set_backend</span><span class="p">(</span><span class="s1">&#39;tensorflow&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">10.</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func_output</span><span class="p">,</span><span class="n">grads</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>     <span class="o">&gt;&gt;&gt;</span>     <span class="n">func</span><span class="p">,</span>     <span class="o">&gt;&gt;&gt;</span>     <span class="n">xs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function output: &quot;</span><span class="p">,</span> <span class="n">func_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;grads: &quot;</span><span class="p">,</span> <span class="n">grads</span><span class="p">)</span>
+<span class="go">function output:  ivy.array([  1.,   0., 100.])</span>
+<span class="go">grads:  ivy.array([ 2.,  0., 20.])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">z</span>  <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">variable</span><span class="p">(</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">100.</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span><span class="n">ivy</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func_output</span><span class="p">,</span> <span class="n">grads</span>  <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>     <span class="o">&gt;&gt;&gt;</span>     <span class="n">func</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function output: &quot;</span><span class="p">,</span> <span class="n">func_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;grads: &quot;</span><span class="p">,</span> <span class="n">grads</span><span class="p">)</span>
+<span class="go">function output:  ivy.array(103.)</span>
+<span class="go">grads:  ivy.array([  2.,   1., 100.])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ivy.container.container_methods.execute_with_gradients">
+<span class="sig-prename descclassname">ivy.Container.</span></span><span class="sig-name descname"><span class="pre">execute_with_gradients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retain_grads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_chains</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_apply</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prune_unapplied</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_sequences</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ivy/container/gradients.html#ContainerWithGradients.execute_with_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ivy.container.container_methods.execute_with_gradients" title="Permalink to this definition"></a></dt>
+<dd><p>ivy.Container instance method variant of ivy.execute_with_gradients.
+This method simply wraps the function, and so the docstring for
+ivy.execute_with_gradients also applies to this method with minimal changes.</p>
+<p>Call function func with the container, and return func first output y,
+the gradients [dy/dx for x in xs], and any other function outputs after
+the returned y value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>) – Function for which we compute the gradients of the output with respect to xs
+input.</p></li>
+<li><p><strong>retain_grads</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to retain the gradients of the returned values. (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)
+(Default value = False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>ret</em> – the function first output y, the gradients [dy/dx for x in xs],
+and any other extra function outputs.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>With <code class="code docutils literal notranslate"><span class="pre">ivy.Container</span></code> input:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ivy</span><span class="o">.</span><span class="n">set_backend</span><span class="p">(</span><span class="s1">&#39;tensorflow&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span>  <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">variable</span><span class="p">(</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">100.</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span><span class="n">ivy</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">Container</span><span class="p">(</span><span class="n">a</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>     <span class="o">&gt;&gt;&gt;</span>            <span class="n">func</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func_output</span><span class="p">,</span><span class="n">grads</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function output: &quot;</span><span class="p">,</span> <span class="n">func_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;grads: &quot;</span><span class="p">,</span> <span class="n">grads</span><span class="p">)</span>
+<span class="go">function output:  ivy.array(103.)</span>
+<span class="go">grads:  ivy.array([  2.,   1., 100.])</span>
+</pre></div>
+</div>
+<p>With multiple <code class="code docutils literal notranslate"><span class="pre">ivy.Container</span></code> inputs:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">Container</span><span class="p">(</span>     <span class="o">&gt;&gt;&gt;</span>            <span class="n">a</span><span class="o">=</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">]),</span>     <span class="o">&gt;&gt;&gt;</span>            <span class="n">b</span> <span class="o">=</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.</span><span class="p">,</span><span class="mf">5.</span><span class="p">,</span><span class="mf">5.</span><span class="p">])</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>     <span class="o">&gt;&gt;&gt;</span>            <span class="n">func</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_func_output</span><span class="p">,</span> <span class="n">a_grads</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b_func_output</span><span class="p">,</span> <span class="n">b_grads</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a function output: &quot;</span><span class="p">,</span> <span class="n">a_func_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a gradients: &quot;</span><span class="p">,</span> <span class="n">a_grads</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;b function output: &quot;</span><span class="p">,</span> <span class="n">b_func_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;b gradients: &quot;</span><span class="p">,</span> <span class="n">b_grads</span><span class="p">)</span>
+<span class="go">a function output:  ivy.array([1., 1., 1.])</span>
+<span class="go">a gradients:  ivy.array([2., 2., 2.])</span>
+<span class="go">b function output:  ivy.array([25., 25., 25.])</span>
+<span class="go">b gradients:  ivy.array([10., 10., 10.])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">linear</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">Container</span><span class="p">(</span>     <span class="o">&gt;&gt;&gt;</span>     <span class="n">a</span><span class="o">=</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">]),</span>     <span class="o">&gt;&gt;&gt;</span>     <span class="n">b</span> <span class="o">=</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.</span><span class="p">,</span><span class="mf">5.</span><span class="p">,</span><span class="mf">5.</span><span class="p">]),</span>     <span class="o">&gt;&gt;&gt;</span>     <span class="n">c</span><span class="o">=</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">1.</span><span class="p">])</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>     <span class="o">&gt;&gt;&gt;</span>     <span class="n">func</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_func_output</span><span class="p">,</span> <span class="n">a_grads</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b_func_output</span><span class="p">,</span> <span class="n">b_grads</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c_func_output</span><span class="p">,</span> <span class="n">c_grads</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a function output: &quot;</span><span class="p">,</span> <span class="n">a_func_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a gradients: &quot;</span><span class="p">,</span> <span class="n">a_grads</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;b function output: &quot;</span><span class="p">,</span> <span class="n">b_func_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;b gradients: &quot;</span><span class="p">,</span> <span class="n">b_grads</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;c function output: &quot;</span><span class="p">,</span> <span class="n">c_func_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;c gradients: &quot;</span><span class="p">,</span> <span class="n">c_grads</span><span class="p">)</span>
+<span class="go">a function output:  ivy.array([2.36])</span>
+<span class="go">a gradients:  ivy.array([1.15  , 1.12  , 0.0972])</span>
+<span class="go">b function output:  ivy.array([11.8])</span>
+<span class="go">b gradients:  ivy.array([1.15  , 1.12  , 0.0972])</span>
+<span class="go">c function output:  ivy.array([1.24])</span>
+<span class="go">c gradients:  ivy.array([1.15  , 1.12  , 0.0972])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ivy.container.container_methods.static_execute_with_gradients">
 <span class="sig-prename descclassname">ivy.Container.</span></span><span class="sig-name descname"><span class="pre">static_execute_with_gradients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retain_grads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_chains</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_apply</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prune_unapplied</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_sequences</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ivy/container/gradients.html#ContainerWithGradients.static_execute_with_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ivy.container.container_methods.static_execute_with_gradients" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>ivy.Container static method variant of ivy.execute_with_gradients.
+This method simply wraps the function, and so the docstring for
+ivy.execute_with_gradients also applies to this method with minimal changes.</p>
+<p>Call function func with input of xs variables, and return func first output y,
+the gradients [dy/dx for x in xs], and any other function outputs after
+the returned y value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>) – Function for which we compute the gradients of the output with respect to xs
+input.</p></li>
+<li><p><strong>xs</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="../../../data_classes/container/container/Container.html#ivy.container.container.Container" title="ivy.container.container.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code></a>, <a class="reference internal" href="../../../data_classes/array/array/Array.html#ivy.array.array.Array" title="ivy.array.array.Array"><code class="xref py py-class docutils literal notranslate"><span class="pre">Array</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">NativeArray</span></code>]) – Variables for which to compute the function gradients with respective to.</p></li>
+<li><p><strong>retain_grads</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to retain the gradients of the returned values. (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)
+(Default value = False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>ret</em> – the function first output y, the gradients [dy/dx for x in xs],
+and any other extra function outputs.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>With <code class="code docutils literal notranslate"><span class="pre">ivy.Container</span></code> input:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ivy</span><span class="o">.</span><span class="n">set_backend</span><span class="p">(</span><span class="s1">&#39;tensorflow&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span>  <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">variable</span><span class="p">(</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">100.</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span><span class="n">ivy</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">Container</span><span class="p">(</span><span class="n">a</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">Container</span><span class="o">.</span><span class="n">static_execute_with_gradients</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>           <span class="n">func</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>           <span class="n">xs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func_output</span><span class="p">,</span><span class="n">grads</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function output: &quot;</span><span class="p">,</span> <span class="n">func_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;grads: &quot;</span><span class="p">,</span> <span class="n">grads</span><span class="p">)</span>
+<span class="go">function output:  ivy.array(103.)</span>
+<span class="go">grads:  ivy.array([  2.,   1., 100.])</span>
+</pre></div>
+</div>
+<p>With multiple <code class="code docutils literal notranslate"><span class="pre">ivy.Container</span></code> inputs:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">Container</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>           <span class="n">a</span><span class="o">=</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">]),</span>
+<span class="gp">&gt;&gt;&gt; </span>           <span class="n">b</span> <span class="o">=</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.</span><span class="p">,</span><span class="mf">5.</span><span class="p">,</span><span class="mf">5.</span><span class="p">])</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">Container</span><span class="o">.</span><span class="n">static_execute_with_gradients</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>           <span class="n">func</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>           <span class="n">xs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_func_output</span><span class="p">,</span> <span class="n">a_grads</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b_func_output</span><span class="p">,</span> <span class="n">b_grads</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a function output: &quot;</span><span class="p">,</span> <span class="n">a_func_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a gradients: &quot;</span><span class="p">,</span> <span class="n">a_grads</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;b function output: &quot;</span><span class="p">,</span> <span class="n">b_func_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;b gradients: &quot;</span><span class="p">,</span> <span class="n">b_grads</span><span class="p">)</span>
+<span class="go">a function output:  ivy.array([1., 1., 1.])</span>
+<span class="go">a gradients:  ivy.array([2., 2., 2.])</span>
+<span class="go">b function output:  ivy.array([25., 25., 25.])</span>
+<span class="go">b gradients:  ivy.array([10., 10., 10.])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">linear</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">linear</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">Container</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>           <span class="n">a</span><span class="o">=</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">]),</span>
+<span class="gp">&gt;&gt;&gt; </span>           <span class="n">b</span> <span class="o">=</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.</span><span class="p">,</span><span class="mf">5.</span><span class="p">,</span><span class="mf">5.</span><span class="p">]),</span>
+<span class="gp">&gt;&gt;&gt; </span>           <span class="n">c</span><span class="o">=</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">1.</span><span class="p">])</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">Container</span><span class="o">.</span><span class="n">static_execute_with_gradients</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>           <span class="n">func</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>           <span class="n">xs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_func_output</span><span class="p">,</span> <span class="n">a_grads</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b_func_output</span><span class="p">,</span> <span class="n">b_grads</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c_func_output</span><span class="p">,</span> <span class="n">c_grads</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a function output: &quot;</span><span class="p">,</span> <span class="n">a_func_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a gradients: &quot;</span><span class="p">,</span> <span class="n">a_grads</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;b function output: &quot;</span><span class="p">,</span> <span class="n">b_func_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;b gradients: &quot;</span><span class="p">,</span> <span class="n">b_grads</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;c function output: &quot;</span><span class="p">,</span> <span class="n">c_func_output</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;c gradients: &quot;</span><span class="p">,</span> <span class="n">c_grads</span><span class="p">)</span>
+<span class="go">a function output:  ivy.array([-0.104])</span>
+<span class="go">a gradients:  ivy.array([ 0.138,  0.971, -1.21 ])</span>
+<span class="go">b function output:  ivy.array([-0.521])</span>
+<span class="go">b gradients:  ivy.array([ 0.138,  0.971, -1.21 ])</span>
+<span class="go">c function output:  ivy.array([-1.08])</span>
+<span class="go">c gradients:  ivy.array([ 0.138,  0.971, -1.21 ])</span>
+</pre></div>
+</div>
+</dd></dl>
 
 <div class="line-block">
 <div class="line"><br /></div>
