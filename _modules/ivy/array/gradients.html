@@ -337,9 +337,8 @@
 <span class="sd">        &gt;&gt;&gt; ivy.set_backend(&#39;tensorflow&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; func = lambda x :x**2</span>
 <span class="sd">        &gt;&gt;&gt; xs =ivy.array([1.,0.,10.])</span>
-<span class="sd">        &gt;&gt;&gt; func_output,grads = ivy.execute_with_gradients( \</span>
-<span class="sd">        &gt;&gt;&gt;     func, \</span>
-<span class="sd">        &gt;&gt;&gt;     xs)</span>
+<span class="sd">        &gt;&gt;&gt; func_output,grads = ivy.execute_with_gradients(func, \</span>
+<span class="sd">                    xs)</span>
 <span class="sd">        &gt;&gt;&gt; print(&quot;function output: &quot;, func_output)</span>
 <span class="sd">        &gt;&gt;&gt; print(&quot;grads: &quot;, grads)</span>
 <span class="sd">        function output:  ivy.array([  1.,   0., 100.])</span>
@@ -348,8 +347,7 @@
 <span class="sd">        &gt;&gt;&gt; z  = ivy.variable(ivy.array([2.,1.,100.]))</span>
 <span class="sd">        &gt;&gt;&gt; func = lambda x :ivy.matmul(z,x)</span>
 <span class="sd">        &gt;&gt;&gt; xs = ivy.array([1.,1.,1.])</span>
-<span class="sd">        &gt;&gt;&gt; func_output, grads  = xs.execute_with_gradients( \</span>
-<span class="sd">        &gt;&gt;&gt;     func)</span>
+<span class="sd">        &gt;&gt;&gt; func_output, grads  = xs.execute_with_gradients(func)</span>
 <span class="sd">        &gt;&gt;&gt; print(&quot;function output: &quot;, func_output)</span>
 <span class="sd">        &gt;&gt;&gt; print(&quot;grads: &quot;, grads)  </span>
 <span class="sd">        function output:  ivy.array(103.)</span>

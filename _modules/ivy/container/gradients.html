@@ -428,9 +428,8 @@
 <span class="sd">        &gt;&gt;&gt; z  = ivy.variable(ivy.array([2.,1.,100.]))</span>
 <span class="sd">        &gt;&gt;&gt; func = lambda x :ivy.matmul(z,x)</span>
 <span class="sd">        &gt;&gt;&gt; xs = ivy.Container(a = ivy.array([1.,1.,1.]))</span>
-<span class="sd">        &gt;&gt;&gt; results = ivy.Container.static_execute_with_gradients(</span>
-<span class="sd">        &gt;&gt;&gt;            func,</span>
-<span class="sd">        &gt;&gt;&gt;            xs)</span>
+<span class="sd">        &gt;&gt;&gt; results = ivy.Container.static_execute_with_gradients(func, \</span>
+<span class="sd">                    xs)</span>
 <span class="sd">        &gt;&gt;&gt; func_output,grads = results[&#39;a&#39;]</span>
 <span class="sd">        &gt;&gt;&gt; print(&quot;function output: &quot;, func_output)</span>
 <span class="sd">        &gt;&gt;&gt; print(&quot;grads: &quot;, grads)</span>
@@ -443,9 +442,8 @@
 <span class="sd">        &gt;&gt;&gt; xs = ivy.Container(</span>
 <span class="sd">        &gt;&gt;&gt;            a=ivy.array([1.,1.,1.]),</span>
 <span class="sd">        &gt;&gt;&gt;            b =ivy.array([5.,5.,5.]) )</span>
-<span class="sd">        &gt;&gt;&gt; results = ivy.Container.static_execute_with_gradients(</span>
-<span class="sd">        &gt;&gt;&gt;            func,</span>
-<span class="sd">        &gt;&gt;&gt;            xs)</span>
+<span class="sd">        &gt;&gt;&gt; results = ivy.Container.static_execute_with_gradients(func, \</span>
+<span class="sd">                    xs)</span>
 <span class="sd">        &gt;&gt;&gt; a_func_output, a_grads = results[&#39;a&#39;]</span>
 <span class="sd">        &gt;&gt;&gt; b_func_output, b_grads = results[&#39;b&#39;]</span>
 <span class="sd">        &gt;&gt;&gt; print(&quot;a function output: &quot;, a_func_output)</span>
@@ -463,9 +461,8 @@
 <span class="sd">        &gt;&gt;&gt;            a=ivy.array([1.,1.,1.]),</span>
 <span class="sd">        &gt;&gt;&gt;            b =ivy.array([5.,5.,5.]),</span>
 <span class="sd">        &gt;&gt;&gt;            c=ivy.array([1.,0.,1.]) )</span>
-<span class="sd">        &gt;&gt;&gt; results = ivy.Container.static_execute_with_gradients(</span>
-<span class="sd">        &gt;&gt;&gt;            func,</span>
-<span class="sd">        &gt;&gt;&gt;            xs)</span>
+<span class="sd">        &gt;&gt;&gt; results = ivy.Container.static_execute_with_gradients(func, \</span>
+<span class="sd">                    xs)</span>
 <span class="sd">        &gt;&gt;&gt; a_func_output, a_grads = results[&#39;a&#39;]</span>
 <span class="sd">        &gt;&gt;&gt; b_func_output, b_grads = results[&#39;b&#39;]</span>
 <span class="sd">        &gt;&gt;&gt; c_func_output, c_grads = results[&#39;c&#39;]</span>
@@ -535,8 +532,7 @@
 <span class="sd">        &gt;&gt;&gt; z  = ivy.variable(ivy.array([2.,1.,100.]))</span>
 <span class="sd">        &gt;&gt;&gt; func = lambda x :ivy.matmul(z,x)</span>
 <span class="sd">        &gt;&gt;&gt; xs = ivy.Container(a = ivy.array([1.,1.,1.]))</span>
-<span class="sd">        &gt;&gt;&gt; results = xs.execute_with_gradients( \</span>
-<span class="sd">        &gt;&gt;&gt;            func)</span>
+<span class="sd">        &gt;&gt;&gt; results = xs.execute_with_gradients(func)</span>
 <span class="sd">        &gt;&gt;&gt; func_output,grads = results[&#39;a&#39;]</span>
 <span class="sd">        &gt;&gt;&gt; print(&quot;function output: &quot;, func_output)</span>
 <span class="sd">        &gt;&gt;&gt; print(&quot;grads: &quot;, grads)</span>
@@ -546,11 +542,9 @@
 <span class="sd">        With multiple :code:`ivy.Container` inputs:</span>
 
 <span class="sd">        &gt;&gt;&gt; func = lambda x: x**2</span>
-<span class="sd">        &gt;&gt;&gt; xs = ivy.Container( \</span>
-<span class="sd">        &gt;&gt;&gt;            a=ivy.array([1.,1.,1.]), \</span>
-<span class="sd">        &gt;&gt;&gt;            b =ivy.array([5.,5.,5.]) )</span>
-<span class="sd">        &gt;&gt;&gt; results = xs.execute_with_gradients( \</span>
-<span class="sd">        &gt;&gt;&gt;            func)</span>
+<span class="sd">        &gt;&gt;&gt; xs = ivy.Container(a=ivy.array([1.,1.,1.]), \</span>
+<span class="sd">                b =ivy.array([5.,5.,5.]) )</span>
+<span class="sd">        &gt;&gt;&gt; results = xs.execute_with_gradients(func)</span>
 <span class="sd">        &gt;&gt;&gt; a_func_output, a_grads = results[&#39;a&#39;]</span>
 <span class="sd">        &gt;&gt;&gt; b_func_output, b_grads = results[&#39;b&#39;]</span>
 <span class="sd">        &gt;&gt;&gt; print(&quot;a function output: &quot;, a_func_output)</span>
@@ -565,12 +559,10 @@
 
 <span class="sd">        &gt;&gt;&gt; linear = ivy.Linear(3,1)</span>
 <span class="sd">        &gt;&gt;&gt; func = lambda x: linear(x)</span>
-<span class="sd">        &gt;&gt;&gt; xs = ivy.Container( \</span>
-<span class="sd">        &gt;&gt;&gt;     a=ivy.array([1.,1.,1.]), \</span>
-<span class="sd">        &gt;&gt;&gt;     b =ivy.array([5.,5.,5.]), \</span>
-<span class="sd">        &gt;&gt;&gt;     c=ivy.array([1.,0.,1.]) )</span>
-<span class="sd">        &gt;&gt;&gt; results = xs.execute_with_gradients( \</span>
-<span class="sd">        &gt;&gt;&gt;     func)</span>
+<span class="sd">        &gt;&gt;&gt; xs = ivy.Container(a=ivy.array([1.,1.,1.]), \</span>
+<span class="sd">            b =ivy.array([5.,5.,5.]), \</span>
+<span class="sd">            c=ivy.array([1.,0.,1.]) )</span>
+<span class="sd">        &gt;&gt;&gt; results = xs.execute_with_gradients(func)</span>
 <span class="sd">        &gt;&gt;&gt; a_func_output, a_grads = results[&#39;a&#39;]</span>
 <span class="sd">        &gt;&gt;&gt; b_func_output, b_grads = results[&#39;b&#39;]</span>
 <span class="sd">        &gt;&gt;&gt; c_func_output, c_grads = results[&#39;c&#39;]</span>
