@@ -204,53 +204,6 @@ with minimal changes.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ivy.array.gradients.ArrayWithGradients.execute_with_gradients">
-<span class="sig-name descname"><span class="pre">execute_with_gradients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retain_grads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ivy/array/gradients.html#ArrayWithGradients.execute_with_gradients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ivy.array.gradients.ArrayWithGradients.execute_with_gradients" title="Permalink to this definition"></a></dt>
-<dd><p>ivy.Array instance method variant of ivy.execute_with_gradients.
-This method simply wraps the function, and so
-the docstring for ivy.execute_with_gradients also applies to this
-method with minimal changes.</p>
-<p>Call function func with the container, and return func first output y,
-the gradients [dy/dx for x in xs], and any other function
-outputs after the returned y value.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>func</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>) – Function for which we compute the gradients of the
-output with respect to xs input.</p></li>
-<li><p><strong>retain_grads</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to retain the gradients of the returned values. (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)
-(Default value = False)
-the function first output y, the gradients [dy/dx for x in xs],
-and any other extra function outputs.</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<p>With <code class="code docutils literal notranslate"><span class="pre">ivy.Array</span></code> input:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ivy</span><span class="o">.</span><span class="n">set_backend</span><span class="p">(</span><span class="s1">&#39;tensorflow&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">10.</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">func_output</span><span class="p">,</span><span class="n">grads</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function output: &quot;</span><span class="p">,</span> <span class="n">func_output</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;grads: &quot;</span><span class="p">,</span> <span class="n">grads</span><span class="p">)</span>
-<span class="go">function output:  ivy.array([  1.,   0., 100.])</span>
-<span class="go">grads:  ivy.array([ 2.,  0., 20.])</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ivy</span><span class="o">.</span><span class="n">set_backend</span><span class="p">(</span><span class="s1">&#39;tensorflow&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span>  <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">variable</span><span class="p">(</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">100.</span><span class="p">]))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span><span class="n">ivy</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">func_output</span><span class="p">,</span> <span class="n">grads</span>  <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function output: &quot;</span><span class="p">,</span> <span class="n">func_output</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;grads: &quot;</span><span class="p">,</span> <span class="n">grads</span><span class="p">)</span>
-<span class="go">function output:  ivy.array(103.)</span>
-<span class="go">grads:  ivy.array([  2.,   1., 100.])</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ivy.array.gradients.ArrayWithGradients.gradient_descent_update">
 <span class="sig-name descname"><span class="pre">gradient_descent_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dcdw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inplace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_gradients</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ivy/array/gradients.html#ArrayWithGradients.gradient_descent_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ivy.array.gradients.ArrayWithGradients.gradient_descent_update" title="Permalink to this definition"></a></dt>
 <dd><p>ivy.Array instance method variant of ivy.gradient_descent_update.
