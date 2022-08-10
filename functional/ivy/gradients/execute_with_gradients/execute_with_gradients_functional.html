@@ -182,38 +182,31 @@ extra function outputs.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span><span class="mi">100</span><span class="o">*</span><span class="n">x</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">2.</span><span class="p">,</span><span class="mf">5.</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span><span class="n">func</span><span class="p">,</span>         <span class="n">xs</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">func_output</span><span class="p">,</span><span class="n">grads</span> <span class="o">=</span> <span class="n">results</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function output: &quot;</span><span class="p">,</span> <span class="n">func_output</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;grads: &quot;</span><span class="p">,</span> <span class="n">grads</span><span class="p">)</span>
-<span class="go">function output:  ivy.array([100., 200., 500.])</span>
-<span class="go">grads:  ivy.array([100., 100., 100.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="go">(ivy.array([100., 200., 500.]),</span>
+<span class="go"> ivy.array([100., 100., 100.]))</span>
 </pre></div>
 </div>
 <p>With <code class="code docutils literal notranslate"><span class="pre">ivy.NativeArray</span></code> input:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">native_array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">2.</span><span class="p">,</span><span class="mf">5.</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span><span class="n">func</span><span class="p">,</span>         <span class="n">xs</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">func_output</span><span class="p">,</span><span class="n">grads</span> <span class="o">=</span> <span class="n">results</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function output: &quot;</span><span class="p">,</span> <span class="n">func_output</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;grads: &quot;</span><span class="p">,</span> <span class="n">grads</span><span class="p">)</span>
-<span class="go">function output:  ivy.array([ 1.,  4., 25.])</span>
-<span class="go">grads:  ivy.array([ 2.,  4., 10.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="go">(ivy.array([ 1.,  4., 25.]),</span>
+<span class="go"> ivy.array([ 2.,  4., 10.]))</span>
 </pre></div>
 </div>
 <p>With <code class="code docutils literal notranslate"><span class="pre">ivy.Container</span></code> input:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">Container</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">]),</span>         <span class="n">b</span> <span class="o">=</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.</span><span class="p">,</span><span class="mf">5.</span><span class="p">,</span><span class="mf">5.</span><span class="p">]))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">func_outputs</span><span class="p">,</span><span class="n">grads</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span><span class="n">func</span><span class="p">,</span>                 <span class="n">xs</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function outputs: &quot;</span><span class="p">,</span> <span class="n">func_outputs</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;gradients: &quot;</span><span class="p">,</span><span class="n">grads</span><span class="p">)</span>
-<span class="go">function outputs:  {</span>
-<span class="go">    a: ivy.array([2., 2., 2.]),</span>
-<span class="go">    b: ivy.array([50., 50., 50.])</span>
-<span class="go">}</span>
-<span class="go">gradients:  {</span>
-<span class="go">    a: ivy.array([4., 4., 4.]),</span>
-<span class="go">    b: ivy.array([20., 20., 20.])</span>
-<span class="go">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span><span class="n">func</span><span class="p">,</span><span class="n">xs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="go">({</span>
+<span class="go">a: ivy.array([2., 2., 2.]),</span>
+<span class="go">b: ivy.array([50., 50., 50.])},</span>
+<span class="go">{a: ivy.array([4., 4., 4.]),</span>
+<span class="go">b: ivy.array([20., 20., 20.])</span>
+<span class="go">})</span>
 </pre></div>
 </div>
 </dd></dl>
