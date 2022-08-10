@@ -356,15 +356,14 @@ and any other extra function outputs.</p>
 <p class="rubric">Examples</p>
 <p>With <code class="code docutils literal notranslate"><span class="pre">ivy.Container</span></code> input:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ivy</span><span class="o">.</span><span class="n">set_backend</span><span class="p">(</span><span class="s1">&#39;tensorflow&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">variable</span><span class="p">(</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">100.</span><span class="p">]))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">ivy</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">Container</span><span class="p">(</span><span class="n">a</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">]))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">Container</span><span class="o">.</span><span class="n">static_execute_with_gradients</span><span class="p">(</span><span class="n">func</span><span class="p">,</span>         <span class="n">xs</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">func_output</span><span class="p">,</span><span class="n">grads</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;function output: &quot;</span><span class="p">,</span> <span class="n">func_output</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;grads: &quot;</span><span class="p">,</span> <span class="n">grads</span><span class="p">)</span>
-<span class="go">function output:  ivy.array(103.)</span>
-<span class="go">grads:  ivy.array([  2.,   1., 100.])</span>
+<span class="go">function output:  ivy.array([2., 2., 2.])</span>
+<span class="go">grads:  ivy.array([4., 4., 4.])</span>
 </pre></div>
 </div>
 <p>With multiple <code class="code docutils literal notranslate"><span class="pre">ivy.Container</span></code> inputs:</p>
