@@ -10555,11 +10555,8 @@
 <span class="sd">    &gt;&gt;&gt; xs = ivy.Container(a = ivy.array([1.,1.,1.]))</span>
 <span class="sd">    &gt;&gt;&gt; results = ivy.Container.static_execute_with_gradients(func, \</span>
 <span class="sd">        xs)</span>
-<span class="sd">    &gt;&gt;&gt; func_output,grads = results[&#39;a&#39;]</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;function output: &quot;, func_output)</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;grads: &quot;, grads)</span>
-<span class="sd">    function output:  ivy.array([2., 2., 2.])</span>
-<span class="sd">    grads:  ivy.array([4., 4., 4.])</span>
+<span class="sd">    &gt;&gt;&gt; print(results)</span>
+<span class="sd">    {a: (list[2], &lt;class ivy.array.array.Array&gt; shape=[3])}</span>
 <span class="sd">    </span>
 <span class="sd">    With multiple :code:`ivy.Container` inputs:</span>
 
@@ -10568,16 +10565,11 @@
 <span class="sd">        b =ivy.array([5.,5.,5.]))</span>
 <span class="sd">    &gt;&gt;&gt; results = ivy.Container.static_execute_with_gradients(func, \</span>
 <span class="sd">                xs)</span>
-<span class="sd">    &gt;&gt;&gt; a_func_output, a_grads = results[&#39;a&#39;]</span>
-<span class="sd">    &gt;&gt;&gt; b_func_output, b_grads = results[&#39;b&#39;]</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;a function output: &quot;, a_func_output)</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;a gradients: &quot;, a_grads)</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;b function output: &quot;, b_func_output)</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;b gradients: &quot;, b_grads)</span>
-<span class="sd">    a function output:  ivy.array([1., 1., 1.])</span>
-<span class="sd">    a gradients:  ivy.array([2., 2., 2.])</span>
-<span class="sd">    b function output:  ivy.array([25., 25., 25.])</span>
-<span class="sd">    b gradients:  ivy.array([10., 10., 10.])</span>
+<span class="sd">    &gt;&gt;&gt; print(results)</span>
+<span class="sd">    {</span>
+<span class="sd">    a: (list[2], &lt;class ivy.array.array.Array&gt; shape=[3]),</span>
+<span class="sd">    b: (list[2], &lt;class ivy.array.array.Array&gt; shape=[3])</span>
+<span class="sd">    }</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">pass</span></div>
 
@@ -10624,11 +10616,8 @@
 <span class="sd">    &gt;&gt;&gt; func = lambda x : 2*x**2</span>
 <span class="sd">    &gt;&gt;&gt; xs = ivy.Container(a = ivy.array([1.,1.,1.]))</span>
 <span class="sd">    &gt;&gt;&gt; results = xs.execute_with_gradients(func)</span>
-<span class="sd">    &gt;&gt;&gt; func_output,grads = results[&#39;a&#39;]</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;function output: &quot;, func_output)</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;grads: &quot;, grads)</span>
-<span class="sd">    function output:  ivy.array([2., 2., 2.])</span>
-<span class="sd">    grads:  ivy.array([4., 4., 4.])</span>
+<span class="sd">    &gt;&gt;&gt; print(results)</span>
+<span class="sd">    {a: (list[2], &lt;class ivy.array.array.Array&gt; shape=[3])}</span>
 
 <span class="sd">    With multiple :code:`ivy.Container` inputs:</span>
 
@@ -10636,16 +10625,9 @@
 <span class="sd">    &gt;&gt;&gt; xs = ivy.Container(a=ivy.array([1.,1.,1.]), \</span>
 <span class="sd">        b =ivy.array([5.,5.,5.]))</span>
 <span class="sd">    &gt;&gt;&gt; results = xs.execute_with_gradients(func)</span>
-<span class="sd">    &gt;&gt;&gt; a_func_output, a_grads = results[&#39;a&#39;]</span>
-<span class="sd">    &gt;&gt;&gt; b_func_output, b_grads = results[&#39;b&#39;]</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;a function output: &quot;, a_func_output)</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;a gradients: &quot;, a_grads)</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;b function output: &quot;, b_func_output)</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;b gradients: &quot;, b_grads)</span>
-<span class="sd">    a function output:  ivy.array([1., 1., 1.])</span>
-<span class="sd">    a gradients:  ivy.array([2., 2., 2.])</span>
-<span class="sd">    b function output:  ivy.array([25., 25., 25.])</span>
-<span class="sd">    b gradients:  ivy.array([10., 10., 10.])</span>
+<span class="sd">    &gt;&gt;&gt; print(results)</span>
+<span class="sd">    {a: (list[2], &lt;class ivy.array.array.Array&gt; shape=[3]),</span>
+<span class="sd">    b: (list[2], &lt;class ivy.array.array.Array&gt; shape=[3])}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">pass</span></div>
 
