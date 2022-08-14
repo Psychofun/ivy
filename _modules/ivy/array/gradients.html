@@ -449,20 +449,30 @@
 <span class="sd">            (Default value = False)</span>
 <span class="sd">            the function first output y, the gradients [dy/dx for x in xs],</span>
 <span class="sd">            and any other extra function outputs.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ret</span>
+<span class="sd">            The function output, following the gradients.</span>
+
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
+
 <span class="sd">        With :code:`ivy.Array` input:</span>
+
 <span class="sd">        &gt;&gt;&gt; ivy.set_backend(&#39;tensorflow&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; func = lambda x :x**2</span>
 <span class="sd">        &gt;&gt;&gt; xs =ivy.array([1.,0.,10.])</span>
 <span class="sd">        &gt;&gt;&gt; results = xs.execute_with_gradients(func)</span>
 <span class="sd">        &gt;&gt;&gt; print(results)</span>
 <span class="sd">        (ivy.array([  1.,   0., 100.]), ivy.array([ 2.,  0., 20.]))</span>
+
 <span class="sd">        &gt;&gt;&gt; func = lambda x :2*x**2</span>
 <span class="sd">        &gt;&gt;&gt; xs = ivy.array([1.,1.,1.])</span>
 <span class="sd">        &gt;&gt;&gt; results  = xs.execute_with_gradients(func)</span>
 <span class="sd">        &gt;&gt;&gt; print(results)</span>
 <span class="sd">        (ivy.array([2., 2., 2.]), ivy.array([4., 4., 4.]))</span>
+<span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">ivy</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span>
             <span class="n">func</span><span class="p">,</span>

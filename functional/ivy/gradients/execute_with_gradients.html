@@ -234,20 +234,27 @@ outputs after the returned y value.
 the function first output y, the gradients [dy/dx for x in xs],
 and any other extra function outputs.</p>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>ret</em> – The function output, following the gradients.</p>
+</dd>
 </dl>
 <p class="rubric">Examples</p>
-<p>With <code class="code docutils literal notranslate"><span class="pre">ivy.Array</span></code> input:
-&gt;&gt;&gt; ivy.set_backend(‘tensorflow’)
-&gt;&gt;&gt; func = lambda x :x**2
-&gt;&gt;&gt; xs =ivy.array([1.,0.,10.])
-&gt;&gt;&gt; results = xs.execute_with_gradients(func)
-&gt;&gt;&gt; print(results)
-(ivy.array([  1.,   0., 100.]), ivy.array([ 2.,  0., 20.]))
-&gt;&gt;&gt; func = lambda x :2*x**2
-&gt;&gt;&gt; xs = ivy.array([1.,1.,1.])
-&gt;&gt;&gt; results  = xs.execute_with_gradients(func)
-&gt;&gt;&gt; print(results)
-(ivy.array([2., 2., 2.]), ivy.array([4., 4., 4.]))</p>
+<p>With <code class="code docutils literal notranslate"><span class="pre">ivy.Array</span></code> input:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ivy</span><span class="o">.</span><span class="n">set_backend</span><span class="p">(</span><span class="s1">&#39;tensorflow&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span><span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">10.</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="go">(ivy.array([  1.,   0., 100.]), ivy.array([ 2.,  0., 20.]))</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xs</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span>  <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">execute_with_gradients</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="go">(ivy.array([2., 2., 2.]), ivy.array([4., 4., 4.]))</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
