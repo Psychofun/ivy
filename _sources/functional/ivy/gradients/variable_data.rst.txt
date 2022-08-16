@@ -4,10 +4,6 @@ variable_data
 .. autofunction:: ivy.functional.ivy.gradients.variable_data
 
 .. autofunction:: ivy.array.array_methods.variable_data
-
-.. autofunction:: ivy.container.container_methods.variable_data
-
-.. autofunction:: ivy.container.container_methods.static_variable_data
 |
 | **Supported Frameworks:**
 
@@ -35,7 +31,5 @@ variable_data
    :caption: variable_data
 
    variable_data/variable_data_functional.rst
-   variable_data/static_variable_data_container.rst
    variable_data/variable_data_array.rst
-   variable_data/variable_data_container.rst
 
